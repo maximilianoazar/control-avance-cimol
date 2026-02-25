@@ -1122,6 +1122,91 @@ for nombre in sorted(list(nombres_cuadrillas_unicas)):
 
 print(f"✅ Se han detectado {len(nombres_cuadrillas_unicas)} cuadrillas listas para el mapa.")
 
+# =======================================================
+# PASO 3.5: PROCESAMIENTO DE DATOS PARA PANEL DE CUADRILLAS
+# =======================================================
+
+# 1. Información Maestra de Cuadrillas
+dict_info_maestra_cuadrillas = {}
+if 'datos_cuadrillas' in locals():
+    for f in datos_cuadrillas[1:]:
+        if len(f) >= 3:
+            c_name = str(f[0]).strip().upper()
+            dict_info_maestra_cuadrillas[c_name] = {
+                "representante": str(f[1]).strip(),
+                "id": str(f[2]).strip()
+            }
+    print(f"DEBUG: {len(dict_info_maestra_cuadrillas)} cuadrillas cargadas.")
+
+# 2. Inicializar variables para el mapa y JS
+info_cuadrillas_js = {}
+dict_cuadrillas_por_casa = {} # <--- ESTO ES LO QUE FALTABA
+todas_cuadrillas_set = set()
+
+print("DEBUG: Iniciando mapeo y cálculo de montos...")
+conteo_exitos = 0
+conteo_errores = 0
+
+# 3. Recorrido de asignaciones (cuadrillas_tratos viene de tu celda de Sheets)
+for (letra_mz, casa_num, partida_nombre), nombre_cuadrilla in cuadrillas_tratos.items():
+    if nombre_cuadrilla and nombre_cuadrilla != "-":
+        c_limpia = str(nombre_cuadrilla).strip().upper()
+        todas_cuadrillas_set.add(c_limpia)
+
+        # A. Llenar dict_cuadrillas_por_casa para el GeoJson del mapa
+        # Usamos la misma llave que usará el mapa: (MZ_LIMPIA, NUMERO)
+        letra_limpia = str(letra_mz).upper().replace("MZ", "").strip()
+        key_casa = (letra_limpia, int(casa_num))
+
+        if key_casa not in dict_cuadrillas_por_casa:
+            dict_cuadrillas_por_casa[key_casa] = set()
+        dict_cuadrillas_por_casa[key_casa].add(c_limpia)
+
+        # B. Calcular montos para el Panel Lateral
+        if c_limpia not in info_cuadrillas_js:
+            info_m = dict_info_maestra_cuadrillas.get(c_limpia, {"representante": "No asignado", "id": "-"})
+            info_cuadrillas_js[c_limpia] = {
+                "representante": info_m["representante"],
+                "id": info_m["id"],
+                "total_pagado": 0.0,
+                "tratos_realizados": []
+            }
+
+        # Buscar precio
+        mz_formateada = f"MZ {letra_mz}"
+        tipo_v = dict_tipos_vivienda.get((mz_formateada, int(casa_num)), "Tipo A1")
+
+        valor_partida = 0.0
+        if partida_nombre in precios_tratos:
+            valor_partida = precios_tratos[partida_nombre].get(tipo_v, 0.0)
+
+        if valor_partida > 0:
+            info_cuadrillas_js[c_limpia]["total_pagado"] += valor_partida
+            info_cuadrillas_js[c_limpia]["tratos_realizados"].append({
+                "casa": f"Mz {letra_mz} - Casa {casa_num} ({partida_nombre})",
+                "monto": valor_partida
+            })
+            conteo_exitos += 1
+        else:
+            conteo_errores += 1
+
+# Convertir los sets de cuadrillas a listas para que sean serializables a JSON
+for k in dict_cuadrillas_por_casa:
+    dict_cuadrillas_por_casa[k] = list(dict_cuadrillas_por_casa[k])
+
+print(f"DEBUG: Mapeo terminado.")
+print(f"DEBUG: Partidas con monto: {conteo_exitos}")
+print(f"DEBUG: Partidas sin monto: {conteo_errores}")
+
+# 4. Generar HTML de opciones
+html_opciones_cuadrillas = '<div onclick="filtrarC(\'TODAS\')" style="cursor:pointer; padding:8px; border-bottom:1px solid #eee; font-weight:bold; color:#2c3e50;">• TODAS</div>'
+for c in sorted(info_cuadrillas_js.keys()):
+    html_opciones_cuadrillas += f'''
+    <div class="item-cuadrilla" style="border-bottom:1px solid #eee; display:flex; align-items:center;">
+        <div onclick="filtrarC(\'{c}\')" style="cursor:pointer; padding:8px; flex-grow:1; font-size:12px;">• {c}</div>
+        <div onclick="toggleDetalleCuadrilla(\'{c}\')" style="cursor:pointer; padding:8px 12px; color:#1abc9c; font-weight:bold; border-left:1px solid #eee;">→</div>
+    </div>'''
+
 
 # --- 1. REPARACIÓN DE DATOS DE CUADRILLAS ---
 dict_info_maestra_cuadrillas = {}
