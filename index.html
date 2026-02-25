@@ -18,18 +18,19 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: #1a1a1a; /* Color de fondo si la imagen no carga */
+            background-color: var(--negro-suave);
         }
 
-        /* FONDO CONFIGURADO PARA PNG */
+        /* FONDO REPARADO: La imagen ahora debería ser visible */
         .bg-main {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Cambiado de .jpg a .png */
-            background-image: url('fondo.png'); 
+            /* Primero el gradiente de oscurecimiento, luego la imagen */
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                        url('fondo.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -47,32 +48,33 @@
         }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.1); 
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px); 
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.07); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
             padding: 45px 35px;
             border-radius: 20px;
             text-align: center;
             max-width: 400px;
             width: 100%;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
         .logo-img { 
             max-width: 190px; 
             height: auto; 
             margin-bottom: 25px;
+            transition: 0.3s;
         }
+        .logo-img:hover { transform: scale(1.05); }
 
         h1 { 
             color: white;
             font-size: 24px; 
-            font-weight: 400; 
+            font-weight: 300; 
             letter-spacing: 4px; 
             text-transform: uppercase; 
             margin: 10px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .subtitle { 
@@ -81,7 +83,6 @@
             letter-spacing: 3px; 
             text-transform: uppercase; 
             margin-bottom: 40px;
-            font-weight: bold;
         }
 
         .btn {
@@ -102,29 +103,38 @@
             color: white; 
             border: none;
         }
+        .btn-primary:hover { 
+            background: var(--verde-medio);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
 
         .btn-outline { 
             background: transparent; 
             border: 2px solid var(--verde-claro); 
             color: var(--verde-claro); 
         }
+        .btn-outline:hover { 
+            background: var(--verde-claro); 
+            color: var(--negro-suave);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(142, 198, 63, 0.2);
+        }
 
         .info-box {
             margin-top: 30px;
             font-size: 11px;
-            color: white;
-            border-top: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255, 255, 255, 0.4);
+            border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 25px;
-            opacity: 0.8;
         }
 
         footer {
             margin-top: 30px;
             font-size: 10px;
-            color: white;
+            color: rgba(255, 255, 255, 0.3);
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
     </style>
 </head>
@@ -142,6 +152,7 @@
             <p class="subtitle">Sistemas de Gestión</p>
             
             <a href="Obras.html" class="btn btn-primary">📍 Abrir Portafolio</a>
+            
             <a href="actualizar.html" class="btn btn-outline">🔄 Actualización de Datos</a>
             
             <div class="info-box">
