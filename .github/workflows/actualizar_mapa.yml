@@ -39,6 +39,7 @@ jobs:
         cp index.html public/index.html
         cp Obras.html public/Obras.html || echo "No hay Obras.html"
         cp espera.html public/espera.html || echo "No hay espera.html"
+        cp actualizar.html public/actualizar.html || echo "No hay actualizar.html"
         
         # COPIAR LOGO Y FONDO (Para que no desaparezcan)
         cp logo.png public/logo.png || echo "No se encontró logo.png"
