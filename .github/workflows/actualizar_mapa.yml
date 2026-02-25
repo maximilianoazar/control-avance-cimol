@@ -30,7 +30,7 @@ jobs:
     - name: Ejecutar script de generación
       env:
         GDRIVE_CREDENTIALS: ${{ secrets.GDRIVE_CREDENTIALS }}
-      run: python plano_int_2_0.py
+      run: python plano_obra_campos_del_sur_ii.py
 
     - name: Preparar carpeta pública
       run: |
