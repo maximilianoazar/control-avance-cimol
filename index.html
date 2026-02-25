@@ -13,32 +13,24 @@
             --negro-suave: #0f0f0f;
         }
 
+        /* Usamos la lógica del index antiguo: fondo directo en el body */
         body, html {
             height: 100%;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', sans-serif;
-            background-color: var(--negro-suave);
-        }
-
-        /* FONDO REPARADO: La imagen ahora debería ser visible */
-        .bg-main {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Primero el gradiente de oscurecimiento, luego la imagen */
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-                        url('fondo.jpg');
+            background-image: url('fondo.png'); /* Tu imagen tal cual */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            z-index: -1;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .wrapper {
-            min-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -48,16 +40,16 @@
         }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.07); 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             padding: 45px 35px;
             border-radius: 20px;
             text-align: center;
             max-width: 400px;
-            width: 100%;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
         .logo-img { 
@@ -71,10 +63,11 @@
         h1 { 
             color: white;
             font-size: 24px; 
-            font-weight: 300; 
+            font-weight: 400; 
             letter-spacing: 4px; 
             text-transform: uppercase; 
             margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
         }
 
         .subtitle { 
@@ -83,6 +76,8 @@
             letter-spacing: 3px; 
             text-transform: uppercase; 
             margin-bottom: 40px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
         }
 
         .btn {
@@ -124,24 +119,24 @@
         .info-box {
             margin-top: 30px;
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-            border-top: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-top: 1px solid rgba(255,255,255,0.2);
             padding-top: 25px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
         }
 
         footer {
             margin-top: 30px;
             font-size: 10px;
-            color: rgba(255, 255, 255, 0.3);
+            color: white;
             letter-spacing: 2px;
             text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-main"></div>
-    
     <div class="wrapper">
         <div class="main-card">
             <a href="https://cimol.cl/">
