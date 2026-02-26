@@ -1273,8 +1273,8 @@ esquinas_plano = [[0, 0], [h, w]]
 
 # MODIFICACIÓN: Aumentamos considerablemente los márgenes para dar más "aire"
 # Calculamos márgenes basados en porcentaje de ancho (w) y alto (h)
-margen_H = w * 0.35 # Aumentado al 40% horizontal (antes 20%)
-margen_V_top = h * 0.10 # Agregado 10% vertical hacia arriba
+margen_H = w * 0.45 # Aumentado horizontal
+margen_V_top = h * 0.10 # Agregado vertical hacia arriba
 
 # MODIFICACIÓN: Ajustamos los límites máximos permitidos (max_bounds)
 # Expandimos max_lat hacia arriba, min_lon hacia la izquierda y max_lon hacia la derecha.
