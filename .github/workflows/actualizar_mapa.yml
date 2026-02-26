@@ -44,6 +44,7 @@ jobs:
         # COPIAR LOGO Y FONDO (Para que no desaparezcan)
         cp logo.png public/logo.png || echo "No se encontró logo.png"
         cp fondo.png public/fondo.png || echo "No se encontró fondo.png"
+        cp loguito.png public/loguito.png || echo "No se encontró loguito.png"
         
         # Copiamos los resultados del script
         cp obra_campos_del_sur_ii.html public/obra_campos_del_sur_ii.html || echo "No se generó el plano de la obra campos del sur II"
