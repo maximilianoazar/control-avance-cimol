@@ -46,8 +46,8 @@ jobs:
         cp fondo.png public/fondo.png || echo "No se encontró fondo.png"
         
         # Copiamos los resultados del script
-        cp /obra_campos_del_sur_ii.html public/obra_campos_del_sur_ii.html || echo "No se generó el plano de la obra campos del sur II"
-        cp plano.png public/plano.png || echo "No hay plano.png"
+        cp obra_campos_del_sur_ii.html public/obra_campos_del_sur_ii.html || echo "No se generó el plano de la obra campos del sur II"
+        cp plano2.png public/plano2.png || echo "No hay plano.png"
 
     - name: Publicar en GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
