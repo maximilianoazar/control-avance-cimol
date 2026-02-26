@@ -1367,7 +1367,7 @@ overlay_html = r'''
 .casa-header:hover { background: #f5f5f5; }
 </style>
 
-<a href="https://maximilianoazar.github.io/obra-campos-del-sur-ii/index.html" style="position: fixed; top: 20px; left: 60px; z-index: 9999; background: white; color: #2c3e50; text-decoration: none; padding: 10px 18px; border-radius: 50px; font-family: 'Segoe UI', Arial; font-size: 14px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #eee; display: flex; align-items: center; gap: 8px;">
+<a href="https://maximilianoazar.github.io/control-avance-cimol" style="position: fixed; top: 20px; left: 60px; z-index: 9999; background: white; color: #2c3e50; text-decoration: none; padding: 10px 18px; border-radius: 50px; font-family: 'Segoe UI', Arial; font-size: 14px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #eee; display: flex; align-items: center; gap: 8px;">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
     <span>Volver al Inicio</span>
 </a>
