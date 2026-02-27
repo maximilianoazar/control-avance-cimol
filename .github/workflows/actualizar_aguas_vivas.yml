@@ -1,0 +1,57 @@
+name: Actualizar Plano Aguas Vivas
+
+on:
+  repository_dispatch: 
+    types: [webhook_update_aguas_vivas] # Trigger específico para Make.com
+  schedule:
+    - cron: '30 * * * *' # Se ejecuta al minuto 30 de cada hora (para no chocar con el otro)
+  workflow_dispatch:      # Permite el botón de "Run workflow" manual
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del código
+      uses: actions/checkout@v3
+
+    - name: Instalar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Instalar librerías
+      run: |
+        pip install -r requirements.txt
+
+    - name: Ejecutar script de generación
+      env:
+        GDRIVE_CREDENTIALS: ${{ secrets.GDRIVE_CREDENTIALS }}
+      run: python plano_aguas_vivas.py
+
+    - name: Preparar carpeta pública
+      run: |
+        mkdir -p public
+        # Copiamos archivos base
+        cp index.html public/index.html || echo "No hay index.html"
+        cp Obras.html public/Obras.html || echo "No hay Obras.html"
+        
+        # Copiamos assets visuales
+        cp logo.png public/logo.png || echo "No se encontró logo.png"
+        cp fondo.png public/fondo.png || echo "No se encontró fondo.png"
+        cp loguito.png public/loguito.png || echo "No se encontró loguito.png"
+        
+        # RESULTADOS ESPECÍFICOS DE AGUAS VIVAS
+        # Asumo que el script genera un .html y un .png similares
+        cp plano_aguas_vivas.html public/plano_aguas_vivas.html || echo "No se generó el HTML"
+        cp plano_aguas_vivas.png public/plano_aguas_vivas.png || echo "No se generó el PNG"
+
+    - name: Publicar en GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        keep_files: true # IMPORTANTE: Para que no borre lo de Campos del Sur
