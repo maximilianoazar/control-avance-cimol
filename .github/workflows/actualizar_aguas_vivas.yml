@@ -2,10 +2,8 @@ name: Actualizar Plano Aguas Vivas
 
 on:
   repository_dispatch: 
-    types: [webhook_update_aguas_vivas] # Trigger específico para Make.com
-  schedule:
-    - cron: '30 * * * *' # Se ejecuta al minuto 30 de cada hora (para no chocar con el otro)
-  workflow_dispatch:      # Permite el botón de "Run workflow" manual
+    types: [webhook_aguas_vivas] # Trigger para Make
+  workflow_dispatch:           # Botón manual
 
 permissions:
   contents: write
@@ -13,67 +11,29 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout del código
+    - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Instalar Python
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
 
-    - name: Instalar librerías
-      run: |
-        pip install -r requirements.txt
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-    - name: Ejecutar script de generación
+    - name: Run Aguas Vivas Script
       env:
         GDRIVE_CREDENTIALS: ${{ secrets.GDRIVE_CREDENTIALS }}
       run: python plano_aguas_vivas.py
 
-    - name: Preparar carpeta pública
-      run: |
-        mkdir -p public
-        # Copiamos archivos base
-        cp index.html public/index.html || echo "No hay index.html"
-        cp Obras.html public/Obras.html || echo "No hay Obras.html"
-        
-        # Copiamos assets visuales
-        cp logo.png public/logo.png || echo "No se encontró logo.png"
-        cp fondo.png public/fondo.png || echo "No se encontró fondo.png"
-        cp loguito.png public/loguito.png || echo "No se encontró loguito.png"
-        cp Plano Aguas Vivas.png public/Plano Aguas Vivas.png || echo "No se generó Plano Aguas Vivas.png"
-        cp plano2.png public/plano2.png || echo "No hay plano.png"
-        
-        
-        # RESULTADOS PLANOS
-        cp plano_aguas_vivas.html public/plano_aguas_vivas.html || echo "No se generó plano_aguas_vivas.html"
-        cp obra_campos_del_sur_ii.html public/obra_campos_del_sur_ii.html || echo "No se generó el plano de la obra campos del sur II"
-    
-    - name: 🔍 DEBUG - Ver archivos y Preparar carpeta
-      run: |
-        echo "--- ARCHIVOS EN LA RAÍZ ANTES DE COPIAR ---"
-        ls -lh
-        
-        mkdir -p public
-        
-        # Forzamos el error: Si no existe el archivo, la Action SE DETENDRÁ aquí
-        # y nos dirá exactamente por qué.
-        cp index.html public/
-        cp Obras.html public/
-        
-        echo "--- INTENTANDO COPIAR PLANOS ---"
-        # Quitamos el || echo para que si falla, veamos el error real
-        cp plano_aguas_vivas.html public/
-        cp plano_aguas_vivas.png public/
-        
-        echo "--- CONTENIDO FINAL DE CARPETA PUBLIC ---"
-        ls -lh public/
-    
-    - name: Publicar en GitHub Pages
+    - name: Deploy to GH Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
-        keep_files: True
+        publish_dir: . # Publicamos desde la raíz directamente
+        keep_files: true # CRÍTICO: No borra los archivos de la otra obra
+        destination_dir: . # Lo mantiene en la raíz de la web
+        # Solo subimos lo que generamos ahora para no ensuciar
+        exclude_assets: '.github,*.py,requirements.txt,README.md'
